@@ -46,7 +46,7 @@ export class AppComponent {
     this.imgsrc = this.imgsrc == aux ? "https://http.cat/images/418.jpg" : aux;
   }
 
-  redirectTest = () => {
-    this.urlService.redirectToUrl(this.urlNickname)
+  redirectToLink = () => {
+    this.urlService.getLongUrl(this.urlNickname)
   }
 }

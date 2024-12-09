@@ -26,10 +26,9 @@ export class UrlServiceService {
     });
   }
 
-  redirectToUrl = (nickname : string) => {
+  getLongUrl = (nickname : string) => {
     return this.httpClient.get("http://localhost:8080/"+nickname, {responseType: "text"}).subscribe({
       next: (response) => {
-        console.log(response)
         window.location.href = response
       },
       error: (err) => {
