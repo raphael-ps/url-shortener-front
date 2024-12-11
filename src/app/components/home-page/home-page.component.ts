@@ -2,29 +2,32 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UrlServiceService } from '../../url-service.service';
 import { Router } from '@angular/router';
+import { NavBarComponent } from "../nav-bar/nav-bar.component";
 
 
 interface ShortUrlRequest {
   originalUrl: FormControl<string>;
   nickname: FormControl<string>;
   password: FormControl<string | null>;
+  expirationDate: FormControl<Date | null>;
 }
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NavBarComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
 
-  imgsrc = "https://http.cat/status/418.jpg"
-  name = "Otário";
+  isSubmitting: boolean = false;
   title = 'url-shortener-front';
-  urlNickname = "";
   param!: string | null;
   urlShortenerForm: FormGroup<ShortUrlRequest> ;
+  shortenSucces: boolean = false
+  shortenedLink : string = "";
+  nicknameAlreadyExists: boolean = false;
 
   constructor (
     private readonly urlService: UrlServiceService,
@@ -39,17 +42,37 @@ export class HomePageComponent {
         validators: [Validators.required],
         nonNullable: true,
       }),
-      password: new FormControl("", {nonNullable: false})
+      password: new FormControl(null, {nonNullable: false}),
+      expirationDate: new FormControl(null, {nonNullable: false})
     })
   }
 
   submitShortUrl = () => {
-    this.urlService.addShortUrl(this.urlShortenerForm.value as {originalUrl: string; nickname: string; password: string | null})
+    this.isSubmitting = true;
+    this.urlService.addShortUrl(this.urlShortenerForm.value as {originalUrl: string; nickname: string; password: string | null}).subscribe({
+      next: (response) => {
+        this.shortenedLink = location.origin + "/" + response
+      },
+      error: (err) => {
+        this.nicknameAlreadyExists = true 
+      },
+      complete: () => {
+        this.shortenSucces = true;
+        this.urlShortenerForm.reset();
+        this.copyUrlToClipboard();
+      }
+    }).add(() => this.isSubmitting = false)
   }
 
-  toggleImage = () => {
-    const aux = "https://http.cat/images/420.jpg"
+  copyUrlToClipboard() {
 
-    this.imgsrc = this.imgsrc == aux ? "https://http.cat/images/418.jpg" : aux;
+    navigator.clipboard.writeText(this.shortenedLink)
+      .then(() => {
+        console.log('Text copied to clipboard');
+      })
+      .catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+  
   }
 }

@@ -1,11 +1,11 @@
-<nav class="w-100 navbar navbar-expand-md shadow-sm" style="backdrop-filter: blur(5px);">
+<nav class="w-100 navbar bg-dark navbar-expand-md shadow-sm position-fixed" >
   <div class="container">
     <div class="d-flex">
         <p class="navbar-brand fw-bold fs-3" style="margin: 0; color: white;">Encurtador</p>
     </div>
     <div class="d-flex gap-4 d-md-flex justify-content-md-end">
-        <button class="btn btn-dark">Login</button>
-        <button class="btn btn-primary">Register</button>
+        <button (click)="loginButton()" class="btn btn-dark">Login</button>
+        <button (click)="registerButton()" class="btn btn-primary">Register</button>
     </div>
   </div>
 </nav>

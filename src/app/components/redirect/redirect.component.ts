@@ -18,6 +18,8 @@ export class RedirectComponent implements OnInit{
   password: string = "";
   isInvalidPassword: boolean = false;
 
+  longUrl: string = "";
+
   constructor(
     private actRoute: ActivatedRoute,
     private urlService: UrlServiceService,
@@ -29,16 +31,13 @@ export class RedirectComponent implements OnInit{
 
     this.urlService.getLongUrl(this.param).subscribe({
       next: (response) => {
-        window.location.href = response;
+         this.longUrl = response;
       },
       error: (err) => {
         this.error = err.status
-        if (err.status == 401){
-          console.log("Aguardando Senha")
-        }
-        else if (err.status == 404){
-          console.log("redirecionar para página not found")
-        }
+      },
+      complete: () => {
+        location.href = this.longUrl
       }
     })
     

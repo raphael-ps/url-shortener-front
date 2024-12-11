@@ -15,17 +15,7 @@ export class UrlServiceService {
     password : string | null;
   }) => {
     console.log(info)
-    return this.httpClient.post("http://localhost:8080/shorten", info).subscribe({
-      next: (response) => {
-        console.log("Requisição bem-sucedida", response);
-      },
-      error: (err) => {
-        console.error("Erro na requisição:", err);
-      },
-      complete: () => {
-        console.log("Requisição completada!");
-      },
-    });
+    return this.httpClient.post("http://localhost:8080/shorten", info, {responseType: "text"})
   }
 
   getLongUrl = (nickname : string) => {

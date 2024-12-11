@@ -1,49 +1,82 @@
-<h1>
-    Muito prazer, meu nome é {{name}}
-  </h1>
-  
-  <div>
-    <img [src]="imgsrc" (mouseenter)="toggleImage()" (mouseleave)="toggleImage()"/>
+<app-nav-bar />
+<div
+  class="container d-flex flex-column align-items-center justify-content-center"
+  style="padding-top: 70px; min-height: 100vh;"
+>
+  <div class="bg-dark text-light p-5 rounded-3 shadow-lg">
+    <form [formGroup]="urlShortenerForm" (ngSubmit)="submitShortUrl()" class="d-flex flex-column gap-3 px-4" >
+      <div class="form-div">
+        <fieldset class="form-group">
+          <legend>Link do URL Original:</legend>
+          <input
+            formControlName="originalUrl"
+            placeholder="https://www.meuURLlongo.com.br/caminho/da/pagina"
+            class="form-control form-control-lg rounded-pill px-4"
+            type="text"
+          />
+        </fieldset>
+      </div>
+
+      <div class="d-flex gap-4 form-div">
+        <fieldset class="form-group flex-grow-1">
+          <legend>Personalizar:</legend>
+          <input
+            (click)="this.nicknameAlreadyExists = false"
+            formControlName="nickname"
+            placeholder="Apelido"
+            class="form-control form-control-sm rounded-pill px-4"
+            type="text"
+            [class.is-invalid] = "nicknameAlreadyExists"
+          />
+          @if (nicknameAlreadyExists) {
+            <div class="invalid-feedback">
+              Esse apelido já está em uso.
+            </div>
+          }
+        </fieldset>
+
+        <fieldset class="form-group flex-grow-1">
+          <legend>Senha:</legend>
+          <input
+            formControlName="password"
+            placeholder="******"
+            class="form-control form-control-sm rounded-pill px-4"
+            type="password"
+          />
+        </fieldset>
+        <!--
+        <fieldset class="form-group flex-grow-1">
+          <legend>Data:</legend>
+          <input
+            formControlName="expirationDate"
+            class="form-control form-control-sm rounded-pill px-4"
+            type="date"
+          />
+        </fieldset>-->
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <button
+          [disabled]="!urlShortenerForm.valid || isSubmitting"
+          class="btn btn-lg px-5 fw-semibold btn-primary rounded-pill"
+        >
+        <span>Encurtar</span>
+          <span
+            class="spinner-border spinner-border-sm"
+            aria-hidden="true"
+            [hidden]="!isSubmitting"
+          ></span>
+        </button>
+      </div>
+    </form>
+
+    @if (shortenSucces) {
+      <div class="d-flex flex-column align-items-center mt-5 px-3">
+        <span class="fs-6">Aqui está seu link: </span>
+        <a [href]="shortenedLink" class="w-100 light-link text-center">{{shortenedLink}}</a>
+        <span class="fw-light" >Link copiado para a área de transferência!</span>
+      </div>
+
+    }
   </div>
-  
-  <div>
-    <form [formGroup]="urlShortenerForm" (ngSubmit)="submitShortUrl()">
-    <fieldset class="form-group">
-      <legend>Link do URL Original:</legend>
-      <input
-        formControlName="originalUrl"
-        placeholder="https://www.meuURLlongo.com.br/meu/caminho"
-        class="form-control form-control-lg"
-        type="text"
-      />
-    </fieldset>
-  
-    <fieldset class="form-group">
-      <legend>URL encurtado:</legend>
-      <input
-        formControlName="nickname"
-        placeholder="meuperfil"
-        class="form-control form-control-sm"
-        type="text"
-      />
-    </fieldset>
-  
-    <fieldset class="form-group">
-      <legend>Senha:</legend>
-      <input
-        formControlName="password"
-        placeholder="******"
-        class="form-control form-control-sm"
-        type="password"
-      />
-    </fieldset>
-  
-    <button 
-      [disabled]="!urlShortenerForm.valid"
-      class="btn btn-lg btn-primary pull-xs-right"
-      >
-      Encurtar
-    </button>
-  </form>
-  </div>
-  
+</div>

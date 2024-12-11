@@ -1,0 +1,19 @@
+.bg-img{
+    background-image: url("../../../../public/assets/notfound.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.home-button{
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: 75%;
+    bottom: 0;
+    height: fit-content;
+    width: fit-content;
+    padding: 15px 40px 15px 40px;
+}
