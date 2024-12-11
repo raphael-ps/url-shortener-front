@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class UrlServiceService {
   addShortUrl = (info: {
     originalUrl : string;
     nickname : string;
+    password : string | null;
   }) => {
     console.log(info)
     return this.httpClient.post("http://localhost:8080/shorten", info).subscribe({
@@ -27,15 +29,11 @@ export class UrlServiceService {
   }
 
   getLongUrl = (nickname : string) => {
-    return this.httpClient.get("http://localhost:8080/"+nickname, {responseType: "text"}).subscribe({
-      next: (response) => {
-        window.location.href = response
-      },
-      error: (err) => {
-        if (err.status == 404){
-          alert("Error 404 - Link Não Encontrado!\nVai Se Fuder! 🤬")
-        }
-      }
-    })
+    return this.httpClient.get(`http://localhost:8080/${nickname}`, {responseType: "text"})
+  }
+
+  validatePassword = (nickname: string, password: string) => {
+    console.log(nickname, password)
+    return this.httpClient.post(`http://localhost:8080/${nickname}/validate-password`, {password: password}, {responseType: "text"})
   }
 }

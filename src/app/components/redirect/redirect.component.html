@@ -1,0 +1,62 @@
+<div class="container-fluid vh-100" style="background-color: #0b101b">
+  @switch (this.error) { @case (401) {
+  <div
+    class="container d-flex align-items-center justify-content-center"
+    style="min-height: 100%"
+  >
+    <div
+      class="card w-60 border-0 shadow gap-4"
+      style="background-color: #181e29; padding: 30px; color: white"
+    >
+      <label for="inputPassword" class="text-center fw-semibold fs-4"
+        >Informe a senha</label
+      >
+      <p class="text-center fs-6">
+        Link protegido por senha. Digite a senha para visualizar.
+      </p>
+      <div>
+        <input
+          type="password"
+          #inputPassword="ngModel"
+          class="form-control"
+          aria-describedby="passwordHelpBlock"
+          required
+          [(ngModel)]="password"
+          [class.is-invalid]="inputPassword.touched && isInvalidPassword"
+        />
+        <div class="invalid-feedback" [hidden]="!isInvalidPassword">
+          Senha inválida! Por favor, tente novamente.
+        </div>
+      </div>
+
+      <div class="container p-0 d-flex justify-content-end">
+        <button
+          class="btn btn-primary"
+          type="button"
+          [disabled]="isSubmitting"
+          (click)="submit()"
+        >
+          @if (this.isSubmitting) {
+          <span
+            class="spinner-border spinner-border-sm"
+            aria-hidden="true"
+          ></span>
+          }
+          <span role="status"> Desbloquear</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  } @case (404) {
+  <app-not-found-page></app-not-found-page>
+  } @default {
+  <div
+    class="d-flex justify-content-center"
+    style="height: 100vh; align-items: center; color: #144EE3"
+  >
+    <div class="spinner-border spinner-border-lg" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  } }
+</div>
