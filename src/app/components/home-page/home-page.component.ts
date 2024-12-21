@@ -49,7 +49,8 @@ export class HomePageComponent {
 
   submitShortUrl = () => {
     this.isSubmitting = true;
-    this.urlService.addShortUrl(this.urlShortenerForm.value as {originalUrl: string; nickname: string; password: string | null}).subscribe({
+
+    this.urlService.addShortUrl(this.urlShortenerForm.getRawValue()).subscribe({
       next: (response) => {
         this.shortenedLink = location.origin + "/" + response
       },

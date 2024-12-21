@@ -1,0 +1,129 @@
+<div
+  class="container d-flex align-items-center"
+  style="min-height: max-content; height: 100vh"
+>
+  <form
+    [formGroup]="userRegisterForm"
+    (ngSubmit)="submitRegister()"
+    class="container h-75 w-50 d-flex py-2 flex-column justify-content-center gap-3 px-4 rounded-4"
+    style="background-color: #faf9f6; min-height: max-content"
+  >
+    <span class="fw-bold fs-5">Cadastre-se: </span>
+
+    <div>
+      <fieldset class="form-group">
+        <input
+        (click)="this.usernameAlreadyExists = false"
+          class="form-control form-control-lg"
+          type="text"
+          placeholder="Nome de usuário"
+          formControlName="username"
+          [class.is-invalid]="usernameAlreadyExists"
+        />
+      </fieldset>
+      @if (usernameAlreadyExists) {
+      <div class="form-text text-danger fw-semibold">
+        Esse nome de usuário já está em uso.
+      </div>
+      }
+    </div>
+
+    <div>
+      <fieldset class="form-group">
+        <input
+        (click)="this.emailAlreadyExists = false"
+          class="form-control form-control-lg"
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+          [class.is-invalid]="emailAlreadyExists"
+        />
+      </fieldset>
+      @if (emailAlreadyExists) {
+      <div class="form-text text-danger fw-semibold">
+        Esse email já está em uso.
+      </div>
+      }
+    </div>
+
+    <div>
+      <fieldset class="form-group">
+        <input
+          (input)="checkConfirmPassword()"
+          class="form-control form-control-lg"
+          type="password"
+          placeholder="Senha"
+          formControlName="password"
+          aria-describedby="passwordAria"
+          [class.is-invalid]="passwordDontMatch && confirmPasswordInput.dirty"
+        />
+      </fieldset>
+      <div class="form-text px-1" id="passwordAria">
+        A senha deve conter no mínimo {{ passwordMinLength }} caracteres
+      </div>
+    </div>
+
+    <div>
+      <fieldset class="form-group">
+        <input
+          [(ngModel)]="passwordConfirmation"
+          [ngModelOptions]="{ standalone: true }"
+          (input)="checkConfirmPassword()"
+          class="form-control form-control-lg"
+          type="password"
+          placeholder="Confirmar senha"
+          #confirmPasswordInput="ngModel"
+          [class.is-invalid]="passwordDontMatch && confirmPasswordInput.dirty"
+        />
+      </fieldset>
+      @if (passwordDontMatch && confirmPasswordInput.dirty) {
+      <div class="form-text text-danger fw-semibold">
+        As senhas não coincidem.
+      </div>
+      }
+    </div>
+
+    <div class="px-1">
+      <p>Já possui uma conta? <a href="user/login">Entre aqui</a></p>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button
+        class="btn btn-lg btn-primary w-100"
+        [disabled]="!userRegisterForm.valid || passwordDontMatch"
+        type="submit"
+      >
+        <span
+          class="spinner-border spinner-border-sm"
+          aria-hidden="true"
+          [hidden]="!isSubmitting"
+        ></span>
+        Registrar
+      </button>
+    </div>
+  </form>
+
+
+  <div class="modal modal-sm fade" 
+  style="background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1040;"
+  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+  [class.show]="registerSuccess"
+  [style.display]="registerSuccess ? 'block' : 'none'"
+  [attr.aria-hidden]="!registerSuccess"
+  >
+  
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body fw-semibold" style="height: 50px;">
+          Usuário registrado com sucesso!
+        </div>
+        <div class="modal-footer border-0">
+          <button (click)="this.registerSuccess = false" type="button" class="btn btn-sm btn-danger">Fechar</button>
+          <button (click)="goToLogin()" type="button" class="btn btn-sm btn-primary">Ir para login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
