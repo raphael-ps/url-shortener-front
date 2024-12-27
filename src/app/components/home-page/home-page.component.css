@@ -1,2 +1,11 @@
-.form-div{
+.myActive{
+    background-color: #212529;
+    color: white;
+    border-bottom: 0;
+}
+
+.tab{
+    cursor: pointer;
+    color: ghostwhite;
+    font-weight: 600;
 }

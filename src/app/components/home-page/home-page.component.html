@@ -1,49 +1,73 @@
 <app-nav-bar />
 <div
   class="container d-flex flex-column align-items-center justify-content-center"
-  style="padding-top: 70px; min-height: 100vh;"
+  style="padding-top: 70px; min-height: 100vh"
 >
-  <div class="bg-dark text-light p-5 rounded-3 shadow-lg">
-    <form [formGroup]="urlShortenerForm" (ngSubmit)="submitShortUrl()" class="d-flex flex-column gap-3 px-4" >
-      <div class="form-div">
-        <fieldset class="form-group">
-          <legend>Link do URL Original:</legend>
-          <input
-            formControlName="originalUrl"
-            placeholder="https://www.meuURLlongo.com.br/caminho/da/pagina"
-            class="form-control form-control-lg rounded-pill px-4"
-            type="text"
-          />
-        </fieldset>
+  <div style="min-width: 70%">
+    <nav class="nav nav-tabs flex-row w-100 rounded-bottom-0">
+      <a
+        class="flex-sm-fill text-sm-center nav-link tab"
+        [class.myActive]="activeTab === 'shorten'"
+        (click)="setActiveTab('shorten')"
+        >Encurtar Link</a
+      >
+      <a
+        class="flex-sm-fill text-sm-center nav-link tab"
+        [class.myActive]="activeTab === 'stats'"
+        (click)="setActiveTab('stats')"
+        >Ver Estatísticas</a
+      >
+    </nav>
+  </div>
+  <div
+    class="bg-dark text-light p-5 rounded-bottom-3 shadow-lg"
+    style="width: 70%"
+  >
+  @if (activeTab === "shorten") {
+    <form
+      [formGroup]="urlShortenerForm"
+      (ngSubmit)="submitShortUrl()"
+      class="d-flex flex-column gap-3 px-4"
+    >
+      <div class="form-floating" style="color: gray">
+        <input
+          formControlName="originalUrl"
+          placeholder="URL Original"
+          class="form-control form-control-lg"
+          type="url"
+          id="floatingOriginalUrl"
+        />
+        <label for="floatingOriginalUrl">URL Original:</label>
       </div>
 
       <div class="d-flex gap-4 form-div">
-        <fieldset class="form-group flex-grow-1">
-          <legend>Personalizar:</legend>
+        <div class="form-floating flex-grow-1" style="color: gray">
           <input
             (click)="this.nicknameAlreadyExists = false"
+            id="floatingNickname"
             formControlName="nickname"
             placeholder="Apelido"
-            class="form-control form-control-sm rounded-pill px-4"
+            class="form-control form-control-sm rounded-3"
             type="text"
-            [class.is-invalid] = "nicknameAlreadyExists"
+            [class.is-invalid]="nicknameAlreadyExists"
           />
-          @if (nicknameAlreadyExists) {
-            <div class="invalid-feedback">
-              Esse apelido já está em uso.
-            </div>
-          }
-        </fieldset>
+          <label for="floatingNickname">Apelido:</label>
 
-        <fieldset class="form-group flex-grow-1">
-          <legend>Senha:</legend>
+          @if (nicknameAlreadyExists) {
+          <div class="invalid-feedback">Esse apelido já está em uso.</div>
+          }
+        </div>
+
+        <div class="form-floating flex-grow-1" style="color: gray">
           <input
             formControlName="password"
-            placeholder="******"
-            class="form-control form-control-sm rounded-pill px-4"
+            placeholder=" ******"
+            class="form-control form-control-sm rounded-3"
             type="password"
+            id="floatingPassword"
           />
-        </fieldset>
+          <label for="floatingPassword">Senha:</label>
+        </div>
         <!--
         <fieldset class="form-group flex-grow-1">
           <legend>Data:</legend>
@@ -55,28 +79,82 @@
         </fieldset>-->
       </div>
 
-      <div class="d-flex justify-content-center mt-3">
+      <div class="d-flex mt-3">
         <button
           [disabled]="!urlShortenerForm.valid || isSubmitting"
-          class="btn btn-lg px-5 fw-semibold btn-primary rounded-pill"
+          class="btn btn-lg flex-grow-1 px-5 fw-semibold btn-primary"
         >
-        <span>Encurtar</span>
           <span
             class="spinner-border spinner-border-sm"
             aria-hidden="true"
             [hidden]="!isSubmitting"
           ></span>
+          <span>Encurtar</span>
         </button>
       </div>
     </form>
 
     @if (shortenSucces) {
-      <div class="d-flex flex-column align-items-center mt-5 px-3">
-        <span class="fs-6">Aqui está seu link: </span>
-        <a [href]="shortenedLink" class="w-100 light-link text-center">{{shortenedLink}}</a>
-        <span class="fw-light" >Link copiado para a área de transferência!</span>
+    <div class="d-flex flex-column align-items-center mt-5 px-3">
+      <span class="fs-6">Aqui está seu link: </span>
+      <a [href]="shortenedLink" class="w-100 light-link text-center">{{
+        shortenedLink
+      }}</a>
+      <span class="fw-light">Link copiado para a área de transferência!</span>
+    </div>
+
+    }
+  }
+    @else {
+      <div class="form-floating">
+        <input [(ngModel)]="nicknameToRetrieve" type="url" id="floatinShortenedUrl" class="form-control form-control-lg my-3" (click)="linkNotFound = false">
+        <label for="floatinShortenedUrl">Apelido do url encurtado:</label>
+        @if (linkNotFound) {
+          <div class="form-text text-danger fw-semibold">Link não encontrado, por favor tente novamente.</div>
+          }
+      </div>
+      <div class="my-3 w-100">
+        <button type="submit" (click)="retrieveUrlStats()" class="btn btn-lg btn-primary" style="display: block; margin-left: auto;" [disabled]="isRetrieving">
+          <span
+            class="spinner-border spinner-border-sm"
+            aria-hidden="true"
+            [hidden]="!isRetrieving"
+          ></span>
+        Ver Estatísticas
+      </button>
       </div>
 
+      @if (linkStatsSucces) {
+        <hr class="mt-4 mb-0">
+
+        <div class="p-4" style="background-color: #212529; border-radius: 0.5rem;">
+          <div class="mb-3">
+            <h5 class="text-white mb-2">Url Original:</h5>
+            <a href="{{shortenedUrl?.originalUrl?.url}}" class="text-info text-decoration-none">{{shortenedUrl?.originalUrl?.url}}</a>
+          </div>
+
+          <div class="mb-3 text-white">
+            Este link foi encurtado <strong>{{shortenedUrl?.originalUrl?.times_shortened}}</strong> vezes
+          </div>
+
+          <div class="d-flex gap-4 mb-3 text-white">
+            <div>
+              <strong>Clicks:</strong> {{shortenedUrl?.clicksCount}}
+            </div>
+            <div>
+              <strong>Acessos:</strong> {{shortenedUrl?.accesses_count}}
+            </div>
+          </div>
+        
+          <div class="mb-3 text-white">
+            <strong>Protegido:</strong> {{shortenedUrl?.password === null ? "Não": "Sim"}}
+          </div>
+        
+          <div class="text-white">
+            <strong>Criado em:</strong> {{shortenedUrl?.creation_date | date:'dd/MM/yyyy HH:mm:ss'}}
+          </div>
+        </div>
+      }
     }
   </div>
 </div>

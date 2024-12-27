@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { shortenedUrl } from './models/ShortenedUrl';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,10 @@ export class UrlServiceService {
 
   getLongUrl = (nickname : string) => {
     return this.httpClient.get(`http://localhost:8080/${nickname}`, {responseType: "text"})
+  }
+
+  retrieveUrlStats = (nickcname: string) => {
+    return this.httpClient.get<shortenedUrl>(`http://localhost:8080/stats/${nickcname}`);
   }
 
   validatePassword = (nickname: string, password: string) => {
