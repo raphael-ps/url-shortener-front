@@ -1,12 +1,55 @@
-<nav class="w-100 navbar bg-dark navbar-expand-md shadow-sm position-fixed" >
-  <div class="container">
+<nav
+  class="w-100 navbar bg-dark navbar-expand-sm shadow-sm position-fixed"
+  style="height: 64px"
+>
+  <div class="container" style="max-height: 100%; height: 100%">
     <div class="d-flex gap-2 align-items-center">
-        <img src="favicon.png" height="40px" width="40px">
-        <p class="navbar-brand fw-bold fs-3" style="margin: 0; color: white;">Encurtador</p>
+      <img src="favicon.png" height="40px" width="40px" />
+      <p
+        class="navbar-brand fw-bold fs-3 collapse navbar-collapse"
+        style="margin: 0; color: white"
+      >
+        Encurtador
+      </p>
     </div>
-    <div class="d-flex gap-4 d-md-flex justify-content-md-end">
-        <button (click)="loginButton()" class="btn btn-dark">Login</button>
-        <button (click)="registerButton()" class="btn btn-primary">Register</button>
+    @if (isLoggedIn) {
+    <div
+      (click)="logout()"
+      style="cursor: pointer; width: 30%; max-width: 30%; max-height: 100%"
+    >
+      <div
+        class="fw-light text-truncate m-auto"
+        style="color: aliceblue; width: fit-content"
+      >
+        Você está logado como:
+      </div>
+      <div
+        class="fw-bold text-truncate m-auto"
+        style="color: aliceblue; width: fit-content"
+      >
+        {{ username }}
+      </div>
     </div>
+    } @else {
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarButtons"
+      style="background-color: rgb(177, 190, 201);"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      id="navbarButtons"
+      class="collapse navbar-collapse"
+      style="width: fit-content; min-height: fit-content; max-height: 100%; justify-content: flex-end;"
+    >
+      <button (click)="loginButton()" class="btn btn-dark mx-2">Login</button>
+      <button (click)="registerButton()" class="btn btn-primary mx-2 m-auto">
+        Register
+      </button>
+    </div>
+    }
   </div>
 </nav>
