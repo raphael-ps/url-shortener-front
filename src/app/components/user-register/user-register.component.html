@@ -1,12 +1,18 @@
 <div
-  class="container d-flex align-items-center"
+  class="container d-flex flex-column justify-content-center align-items-center"
   style="min-height: max-content; height: 100vh"
->
+> 
+<div class="d-flex gap-2 align-items-center mb-4" (click)="goToHome()" style="cursor: pointer;">
+    <img src="favicon.png" height="40px" width="40px">
+    <p class="navbar-brand fw-bold fs-3" style="margin: 0; color: white;">Encurtador</p>
+</div>
+
   <form
     [formGroup]="userRegisterForm"
     (ngSubmit)="submitRegister()"
     class="container h-75 w-50 d-flex py-2 flex-column justify-content-center gap-3 px-4 rounded-4"
-    style="background-color: #faf9f6; min-height: max-content"
+    style="background-color: #faf9f6; min-height: max-content;
+    min-width: fit-content;"
   >
     <span class="fw-bold fs-5">Cadastre-se: </span>
 

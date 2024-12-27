@@ -48,6 +48,10 @@ export class UserRegisterComponent {
     this.route.navigate(["user/login"]);
   }
 
+  goToHome(){
+    this.route.navigate([""]);
+  }
+
   checkConfirmPassword(){
     this.passwordDontMatch = this.userRegisterForm.value.password === this.passwordConfirmation ?false : true;
     console.log(this.passwordDontMatch);
