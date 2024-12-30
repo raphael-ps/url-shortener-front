@@ -3,7 +3,7 @@
   style="height: 64px"
 >
   <div class="container" style="max-height: 100%; height: 100%">
-    <div class="d-flex gap-2 align-items-center">
+    <div class="d-flex gap-2 align-items-center" (click)="navigateToHome()" style="cursor: pointer;">
       <img src="favicon.png" height="40px" width="40px" />
       <p
         class="navbar-brand fw-bold fs-3 collapse navbar-collapse"
@@ -13,41 +13,54 @@
       </p>
     </div>
     @if (isLoggedIn) {
-    <div
-      (click)="logout()"
-      style="cursor: pointer; width: 30%; max-width: 30%; max-height: 100%"
-    >
+    <div class="dropdown" style="cursor: pointer; width: 30%; max-width: 30%; max-height: 100%">
       <div
-        class="fw-light text-truncate m-auto"
-        style="color: aliceblue; width: fit-content"
+        class="dropdown-toggle "
+        data-bs-toggle="dropdown"
       >
-        Você está logado como:
+        <div
+          class="fw-light text-truncate m-auto"
+          style="color: aliceblue; width: fit-content"
+        >
+          Você está logado como:
+        </div>
+        <div
+          class="fw-bold text-truncate m-auto"
+          style="color: aliceblue; width: fit-content"
+        >
+          {{ username }}
+        </div>
       </div>
-      <div
-        class="fw-bold text-truncate m-auto"
-        style="color: aliceblue; width: fit-content"
-      >
-        {{ username }}
-      </div>
+      <ul class="dropdown-menu dropdown-menu-end w-100 border-top-0 rounded-top-0 p-0" data-bs-theme="dark">
+        <li class="dropdown-item fw-semibold border-bottom">Perfil</li>
+        <li (click)="navigateToHistory()" class="dropdown-item fw-semibold border-bottom">Histórico</li>
+        <li (click)="logout()" class="dropdown-item fw-semibold text-danger">Sair</li>
+      </ul>
     </div>
+
     } @else {
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarButtons"
-      style="background-color: rgb(177, 190, 201);"
+      style="background-color: rgb(177, 190, 201)"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div
       id="navbarButtons"
       class="collapse navbar-collapse"
-      style="width: fit-content; min-height: fit-content; max-height: 100%; justify-content: flex-end;"
+      style="
+        width: fit-content;
+        min-height: fit-content;
+        max-height: 100%;
+        justify-content: flex-end;
+      "
     >
-      <button (click)="loginButton()" class="btn btn-dark mx-2">Login</button>
+      <button (click)="loginButton()" class="btn btn-dark mx-2">Entre</button>
       <button (click)="registerButton()" class="btn btn-primary mx-2 m-auto">
-        Register
+        Cadastre-se
       </button>
     </div>
     }

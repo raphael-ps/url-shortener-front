@@ -107,8 +107,8 @@
   }
     @else {
       <div class="form-floating">
-        <input [(ngModel)]="nicknameToRetrieve" type="url" id="floatinShortenedUrl" class="form-control form-control-lg my-3" (click)="linkNotFound = false">
-        <label for="floatinShortenedUrl">Apelido do url encurtado:</label>
+        <input [(ngModel)]="nicknameToRetrieve" type="text" id="floatingShortenedUrl" class="form-control form-control-lg my-3" (click)="linkNotFound = false" [class.is-invalid]="linkNotFound">
+        <label for="floatingShortenedUrl">Apelido do url encurtado:</label>
         @if (linkNotFound) {
           <div class="form-text text-danger fw-semibold">Link não encontrado, por favor tente novamente.</div>
           }
@@ -128,13 +128,9 @@
         <hr class="mt-4 mb-0">
 
         <div class="p-4" style="background-color: #212529; border-radius: 0.5rem;">
-          <div class="mb-3">
-            <h5 class="text-white mb-2">Url Original:</h5>
-            <a href="{{shortenedUrl?.originalUrl?.url}}" class="text-info text-decoration-none">{{shortenedUrl?.originalUrl?.url}}</a>
-          </div>
-
+          
           <div class="mb-3 text-white">
-            Este link foi encurtado <strong>{{shortenedUrl?.originalUrl?.times_shortened}}</strong> vezes
+            O link foi encurtado <strong>{{shortenedUrl?.originalUrl?.times_shortened}}</strong> vezes
           </div>
 
           <div class="d-flex gap-4 mb-3 text-white">

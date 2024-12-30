@@ -28,6 +28,7 @@ export class UserRegisterComponent {
   registerSuccess: boolean = false;
 
   constructor(private readonly userService: UserServiceService, private readonly route: Router){
+    event?.preventDefault()
     this.userRegisterForm = new FormGroup<UserRegisterRequest>({
       username: new FormControl("", {
         validators: [Validators.required],
@@ -45,7 +46,7 @@ export class UserRegisterComponent {
   }
 
   goToLogin(){
-    this.route.navigate(["user/login"]);
+    this.route.navigate(["auth/login"]);
   }
 
   goToHome(){

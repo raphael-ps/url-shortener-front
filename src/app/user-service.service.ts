@@ -33,7 +33,7 @@ export class UserServiceService {
       })
     )
   }
-
+  
   registerUser( userInfo: {
     username: string;
     email: string;

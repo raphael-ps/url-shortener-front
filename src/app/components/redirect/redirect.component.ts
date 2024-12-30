@@ -25,23 +25,25 @@ export class RedirectComponent implements OnInit{
     private urlService: UrlServiceService,
   ){}
 
-  ngOnInit(){
+  ngOnInit(): void {
+    console.log("construtor chamado")
     const optionalParam = this.actRoute.snapshot.paramMap.get('nickname')
     this.param = optionalParam == null ? "" : optionalParam;
-
+  
     this.urlService.getLongUrl(this.param).subscribe({
       next: (response) => {
-         this.longUrl = response;
+         this.longUrl = response.startsWith("http") ? response : "https://" + response;
       },
       error: (err) => {
         this.error = err.status
+        console.log(this.error)
       },
       complete: () => {
-        location.href = this.longUrl
+        location.replace(this.longUrl)
       }
     })
-    
   }
+
 
   submit = () => {
   
@@ -53,7 +55,7 @@ export class RedirectComponent implements OnInit{
     this.isSubmitting = true;
     this.urlService.validatePassword(this.param, this.password).subscribe({
       next: (response) => {
-        window.location.href = response;
+        window.location.href = response.startsWith("http") ? response : "https://" + response;
       },
       error: (err) => {
         if (err.status == 401){
@@ -61,7 +63,7 @@ export class RedirectComponent implements OnInit{
         }
       },
     }).add( () => {
-      setTimeout(() => { this.isSubmitting = false; }, 3000);
+      this.isSubmitting = false;
     })
   }
 }

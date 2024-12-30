@@ -22,7 +22,7 @@ interface ShortUrlRequest {
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
-  activeTab: string = "stats";
+  activeTab: string = "shorten";
   linkStatsSucces: boolean = false;
   nicknameToRetrieve: string = "";
   isRetrieving: boolean = false;
@@ -51,8 +51,12 @@ export class HomePageComponent {
         nonNullable: true,
       }),
       password: new FormControl(null, {nonNullable: false}),
-      expirationDate: new FormControl(null, {nonNullable: false})
+      expirationDate: new FormControl(null, {nonNullable: false}),
     })
+  }
+
+  navigateToHistory(){
+    this.route.navigate(["user/history"]);
   }
 
   retrieveUrlStats(){
@@ -60,7 +64,7 @@ export class HomePageComponent {
       this.linkNotFound = true;
       return;
     }
-    
+
     this.isRetrieving = true;
     this.urlService.retrieveUrlStats(this.nicknameToRetrieve).subscribe({
       next: (response) => {

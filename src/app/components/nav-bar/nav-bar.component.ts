@@ -23,13 +23,22 @@ export class NavBarComponent {
   logout(){
     sessionStorage.clear()
     this.isLoggedIn = false;
+    window.location.reload();
   }
 
   loginButton(){
-    this.route.navigate(["/user/login"])
+    this.route.navigate(["auth", "login"])
   }
 
   registerButton(){
-    this.route.navigate(["/user/register"])
+    this.route.navigate(["auth", "register"])
+  }
+
+  navigateToHistory(){
+    this.route.navigate(["user", "history"])
+  }
+
+  navigateToHome(){
+    this.route.navigate([""])
   }
 }
