@@ -58,7 +58,7 @@ Frontend [xoxo, capenga, manco, anêmico, frágil e inconsistente](https://youtu
 ## Contribution Guide
 
 ### Reporting Issues
-If you encounter bugs or have feature requests, please open an issue in the [GitHub repository](https://github.com/raphael-ps/url_shortener_frontend/issues).
+If you encounter bugs or have feature requests, please open an issue in the [GitHub repository](https://github.com/raphael-ps/url_shortener_front/issues).
 
 ### Submitting Changes
 1. Fork the repository.
